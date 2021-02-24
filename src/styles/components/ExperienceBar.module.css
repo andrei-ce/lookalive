@@ -29,3 +29,30 @@ span.currentExperience {
   top: 12px;
   transform: translateX(-50%);
 }
+
+/* ================ BAREND EFFECTS ================ */
+
+.experienceBar__poly {
+  height: 4px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.experienceBar__poly img {
+  height: 20px;
+  width: 28px;
+  position: relative;
+  right: -100%;
+}
+
+.experienceBar__poly__teal {
+  transform: translateX(-65%) translateY(-30%);
+}
+
+.experienceBar__poly__purple {
+  transform: translateX(-65%) translateY(-75%);
+}
+
+.experienceBar__poly__green {
+  transform: translateX(-45%) translateY(-80%);
+}
