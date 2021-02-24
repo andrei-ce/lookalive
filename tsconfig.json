@@ -21,6 +21,7 @@
     "./src/components",
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.css",
     "**/*.tsx"
   ],
   "exclude": ["node_modules"]

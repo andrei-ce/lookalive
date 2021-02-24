@@ -1,64 +1,65 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styles from '../styles/components/ExperienceBar.module.css';
+import { ChallengesContext } from '../contexts/ChallengesContext';
 
 export const ExperienceBar = () => {
+  // context
+  const { exp, expToNextLevel } = useContext(ChallengesContext);
+
   // state
-  const [currentXP, setCurrentXP] = useState(0);
-  const [max, setMax] = useState(360);
-  const [min, setMin] = useState(0);
+  const [expPercentage, setExpPercentage] = useState(0);
 
   // animations
-  const barVariants = {
-    left: { width: 0 },
-    right: {
-      width: String(currentXP) + '%',
-      transition: { duration: 1.5 },
+  const variants = {
+    bar: {
+      left: { width: 0 },
+      right: {
+        width: String(expPercentage) + '%',
+        transition: { duration: 1.5 },
+      },
     },
-  };
-
-  const polygonVariant_purple = {
-    left: { x: '-100%', y: 0, opacity: 0.5 },
-    right: {
-      x: 0,
-      y: ['+100%', '0%', '-300%', '0%', '+300%', '0%'],
-      opacity: 1,
-      transition: { ease: 'easeIn', duration: 1.25, delay: 0.1 },
+    purple: {
+      left: { x: '-100%', y: 0, opacity: 0.5 },
+      right: {
+        x: 0,
+        y: ['+100%', '0%', '-300%', '0%', '+300%', '0%'],
+        opacity: 1,
+        transition: { ease: 'easeIn', duration: 1.25, delay: 0.1 },
+      },
     },
-  };
-
-  const polygonVariant_green = {
-    left: { x: '-100%', y: 0, opacity: 0.3 },
-    right: {
-      x: 0,
-      y: ['0%', '50%', '-350%', '0%', '+550%', '0%'],
-      opacity: 1,
-      transition: { ease: 'easeOut', duration: 1, delay: 0.1 },
+    green: {
+      left: { x: '-100%', y: 0, opacity: 0.3 },
+      right: {
+        x: 0,
+        y: ['0%', '50%', '-350%', '0%', '+550%', '0%'],
+        opacity: 1,
+        transition: { ease: 'easeOut', duration: 1, delay: 0.1 },
+      },
     },
-  };
-
-  const polygonVariant_teal = {
-    left: { x: '-100%', y: 0, opacity: 0.5 },
-    right: {
-      x: 0,
-      y: ['+100%', '0%', '-420%', '0%', '+420%', '0%'],
-      opacity: 1,
-      transition: { ease: 'easeOut', duration: 1.25, delay: 0.1 },
+    teal: {
+      left: { x: '-100%', y: 0, opacity: 0.5 },
+      right: {
+        x: 0,
+        y: ['+100%', '0%', '-420%', '0%', '+420%', '0%'],
+        opacity: 1,
+        transition: { ease: 'easeOut', duration: 1.25, delay: 0.1 },
+      },
     },
   };
 
   useEffect(() => {
-    setCurrentXP(40);
-  }, [currentXP]);
+    setExpPercentage((exp / expToNextLevel) * 100);
+  }, [expPercentage]);
   //
   return (
     <header className={styles.experienceBar}>
-      <span>{min} xp</span>
+      <span>0 XP</span>
       <div>
-        <motion.div variants={barVariants} initial='left' animate='right'>
+        <motion.div variants={variants.bar} initial='left' animate='right'>
           <motion.div
             className={styles.experienceBar__poly}
-            variants={polygonVariant_teal}
+            variants={variants.teal}
             initial='left'
             animate='right'>
             <img
@@ -69,7 +70,7 @@ export const ExperienceBar = () => {
           </motion.div>
           <motion.div
             className={styles.experienceBar__poly}
-            variants={polygonVariant_purple}
+            variants={variants.purple}
             initial='left'
             animate='right'>
             <img
@@ -81,7 +82,7 @@ export const ExperienceBar = () => {
 
           <motion.div
             className={styles.experienceBar__poly}
-            variants={polygonVariant_green}
+            variants={variants.green}
             initial='left'
             animate='right'>
             <img
@@ -91,11 +92,13 @@ export const ExperienceBar = () => {
             />
           </motion.div>
         </motion.div>
-        <span className={styles.currentExperience} style={{ left: currentXP + '%' }}>
-          {max} xp
+        <span
+          className={styles.currentExperience}
+          style={{ left: expPercentage + '%' }}>
+          {exp} XP
         </span>
       </div>
-      <span>600 xp</span>
+      <span>{expToNextLevel} xp</span>
     </header>
   );
 };
