@@ -5,7 +5,7 @@ import { ChallengesContext } from '../contexts/ChallengesContext';
 
 export const ExperienceBar = () => {
   // context
-  const { exp, expToNextLevel } = useContext(ChallengesContext);
+  const { expCurrent, expToNextLevel } = useContext(ChallengesContext);
 
   // state
   const [expPercentage, setExpPercentage] = useState(0);
@@ -49,7 +49,7 @@ export const ExperienceBar = () => {
   };
 
   useEffect(() => {
-    setExpPercentage((exp / expToNextLevel) * 100);
+    setExpPercentage((expCurrent / expToNextLevel) * 100);
   }, [expPercentage]);
   //
   return (
@@ -95,7 +95,7 @@ export const ExperienceBar = () => {
         <span
           className={styles.currentExperience}
           style={{ left: expPercentage + '%' }}>
-          {exp} XP
+          {expCurrent} XP
         </span>
       </div>
       <span>{expToNextLevel} xp</span>
