@@ -50,7 +50,7 @@ export const ExperienceBar = () => {
 
   useEffect(() => {
     setExpPercentage((expCurrent / expToNextLevel) * 100);
-  }, [expPercentage]);
+  }, [expCurrent]);
   //
   return (
     <header className={styles.experienceBar}>

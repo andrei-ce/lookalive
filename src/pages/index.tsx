@@ -1,5 +1,7 @@
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 
+import { ChallengesProvider } from '../contexts/ChallengesContext';
 import { CountdownProvider } from '../contexts/CountdownContext';
 
 import { ChallengeBox } from '../components/ChallengeBox';
@@ -10,28 +12,53 @@ import { Profile } from '../components/Profile';
 
 import styles from '../styles/pages/Home.module.css';
 
-const Home = () => {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Home | LA</title>
-      </Head>
-      <ExperienceBar />
+interface HomeProps {
+  level: number;
+  expCurrent: number;
+  completedChallenges: number;
+}
 
-      <CountdownProvider>
-        <section>
-          <div>
-            <Profile />
-            <CompletedChallenges />
-            <Countdown />
-          </div>
-          <div>
-            <ChallengeBox />
-          </div>
-        </section>
-      </CountdownProvider>
-    </div>
+const Home = ({ level, expCurrent, completedChallenges }: HomeProps) => {
+  return (
+    <ChallengesProvider
+      level={level}
+      expCurrent={expCurrent}
+      completedChallenges={completedChallenges}>
+      <div className={styles.container}>
+        <Head>
+          <title>Home | LA</title>
+        </Head>
+        <ExperienceBar />
+
+        <CountdownProvider>
+          <section>
+            <div>
+              <Profile />
+              <CompletedChallenges />
+              <Countdown />
+            </div>
+            <div>
+              <ChallengeBox />
+            </div>
+          </section>
+        </CountdownProvider>
+      </div>
+    </ChallengesProvider>
   );
 };
 
 export default Home;
+
+// SSR
+// Everything in "getServerSideProps" is run in the next node.js server
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { level, expCurrent, completedChallenges } = ctx.req.cookies;
+
+  return {
+    props: {
+      level: Number(level),
+      expCurrent: Number(expCurrent),
+      completedChallenges: Number(completedChallenges),
+    },
+  };
+};
